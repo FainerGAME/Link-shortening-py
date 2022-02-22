@@ -8,7 +8,7 @@ shortLink = " " #короткая ссылка
 infinity = True
 token = []
 
-'''Механизм вывода токена https://.../<токен>'''
+'''Список для вывода токена https://.../<токен>'''
 list_values = [ 'A', 'B', 'C', 'D', 'E', 'F', 'G', 
               'H', 'I', 'J', 'K', 'L', 'M', 'N', 
               'O', 'P', 'Q', 'R', 'S', 'T', 'U', 
@@ -18,11 +18,6 @@ list_values = [ 'A', 'B', 'C', 'D', 'E', 'F', 'G',
               'q', 'r', 's', 't', 'u', 'v', 'w', 
               'x', 'y', 'z', '1', '2', '3', '4', 
               '5', '6', '7', '8', '9', '0' ]
-
-while TokenLenght <= 6:
-    token.append(random.choice(list_values))
-    TokenLenght+=1
-
 
 '''Вырезалка'''
 while infinity == True:
@@ -37,9 +32,17 @@ while infinity == True:
 
             if count_elem_spicok > 2:
                 del spicok[2:count_elem_spicok]
-                spicok.append('tinyref.org//')
+                spicok.append('tinyref.org/')
+
+                while TokenLenght <= 6: #генерация токена
+                    token.append(random.choice(list_values))
+                    TokenLenght+=1
+
+                ''' Вывод сокращенной ссылки'''    
                 shortLink = spicok + token
                 print("Сокращенная ссылка > " + "".join(shortLink))
+                token.clear()
+                TokenLenght = 0
                 print()
 
         elif inputURL[4] != 's':
@@ -50,9 +53,17 @@ while infinity == True:
 
             if count_elem_spicok > 2:
                 del spicok[2:count_elem_spicok]
-                spicok.append('tinyref.org//')
+                spicok.append('tinyref.org/')
+
+                while TokenLenght <= 6: #генерация токена
+                    token.append(random.choice(list_values))
+                    TokenLenght+=1
+
+                ''' Вывод сокращенной ссылки'''
                 shortLink = spicok + token 
                 print("Сокращенная ссылка > " + "".join(shortLink))
+                token.clear()
+                TokenLenght = 0
                 print()
     else:
         print("Введите полную ссылку, начиная с 'http(s)'")
