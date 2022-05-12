@@ -5,8 +5,9 @@ import string #для очистки списка от ненужных симв
 '''Переменные'''
 TokenLenght = 1 #длина токена
 shortLink = " " #короткая ссылка
-infinity = True
-token = []
+infinity = True #переменная для продолжения работы программы
+token = []      #созданный токен
+
 
 '''Список для вывода токена https://.../<токен>'''
 list_values = [ 'A', 'B', 'C', 'D', 'E', 'F', 'G', 
@@ -19,52 +20,83 @@ list_values = [ 'A', 'B', 'C', 'D', 'E', 'F', 'G',
               'x', 'y', 'z', '1', '2', '3', '4', 
               '5', '6', '7', '8', '9', '0' ]
 
+
 '''Вырезалка'''
+print()
+print("-- Введите вашу исходную ссылку, а я ее сокращу --")
 while infinity == True:
-    inputURL = input(str(": ")) #вставка оригинальной ссылки
+    inputURL = input(str("('q' для выхода): ")) #вставка оригинальной ссылки
 
+    #Убираем лишнее кроме "https://"
     if inputURL[0:4] == 'http': 
-        #Убираем лишнее кроме "https://"
         if inputURL[4] == 's': 
+            spicok = inputURL.split('/')        #забираются прямые слеши
+            spicok[1] = '//'                    #во второй элемент добавляется двойной слеш
+            del spicok[3:]                      #удаляем остальную часть списка
+            domen_name = spicok[2]              #передаем переменной доменное имя
+            index = 0                           #объявляем для прохода по элементам строки доменного имени
+            short_domen = ''                    #объявляем будущий короткий домен
+
+            #Производим операцию по удалению лишних символов из доменного имени
+            for elem in domen_name:
+                if elem == '.':
+                    pass
+                    index = -2
+                if index > 1:
+                    pass
+                else:
+                    short_domen += elem
+                index+=1
+
+            spicok[2] = short_domen             #закидываем в список короткий домен
+            spicok.append('/')                  #добавлем прямой слэш для отделения доменного имени от токена
+
+            while TokenLenght <= 6: #генерация токена
+                token.append(random.choice(list_values))
+                TokenLenght+=1
+
+            ''' Вывод сокращенной ссылки'''    
+            shortLink = spicok + token
+            print("Сокращенная ссылка > " + "".join(shortLink))
+            token.clear()
+            TokenLenght = 0
+            print()
+
+        #Убираем лишнее кроме "http://". Алгоритм аналогичен
+        elif inputURL[4] != 's':            
             spicok = inputURL.split('/') #забираются прямые слеши
-            spicok[1] = '//' #во второй элемент добавляется двойной слеш
-            count_elem_spicok = len(spicok) #кол-во элементов в списке
+            spicok[1] = '//'
+            del spicok[3:]
+            domen_name = spicok[2]              
+            index = 0                          
+            short_domen = ''                    
 
-            if count_elem_spicok > 2:
-                del spicok[2:count_elem_spicok]
-                spicok.append('tinyref.org/')
+            for elem in domen_name:
+                if elem == '.':
+                    pass
+                    index = -2
+                if index > 1:
+                    pass
+                else:
+                    short_domen += elem
+                index+=1
 
-                while TokenLenght <= 6: #генерация токена
-                    token.append(random.choice(list_values))
-                    TokenLenght+=1
+            spicok[2] = short_domen             
+            spicok.append('/')                  
 
-                ''' Вывод сокращенной ссылки'''    
-                shortLink = spicok + token
-                print("Сокращенная ссылка > " + "".join(shortLink))
-                token.clear()
-                TokenLenght = 0
-                print()
+            while TokenLenght <= 6: #генерация токена
+                token.append(random.choice(list_values))
+                TokenLenght+=1         
 
-        elif inputURL[4] != 's':
-            #Убираем лишнее кроме "http://"
-            spicok = inputURL.split('/') #забираются прямые слеши
-            spicok[1] = '//' #во второй элемент добавляется двойной слеш
-            count_elem_spicok = len(spicok) #кол-во элементов в списке
-
-            if count_elem_spicok > 2:
-                del spicok[2:count_elem_spicok]
-                spicok.append('tinyref.org/')
-
-                while TokenLenght <= 6: #генерация токена
-                    token.append(random.choice(list_values))
-                    TokenLenght+=1
-
-                ''' Вывод сокращенной ссылки'''
-                shortLink = spicok + token 
-                print("Сокращенная ссылка > " + "".join(shortLink))
-                token.clear()
-                TokenLenght = 0
-                print()
-    else:
+            ''' Вывод сокращенной ссылки'''
+            shortLink = spicok + token 
+            print("Сокращенная ссылка > " + "".join(shortLink))
+            token.clear()
+            TokenLenght = 0
+            print()
+    elif inputURL == 'q': #Выход из программы
+        infinity = False
+        print() 
+    else: #Ошибка
+        print()
         print("Введите полную ссылку, начиная с 'http(s)'")
-
